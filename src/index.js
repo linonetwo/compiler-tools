@@ -1,12 +1,9 @@
-// Import React and React-dom.
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import './index.css';
 
-// Import the components.
-import { DummyComponent } from './components/dummy-component.jsx'
-
-// Define the root element.
-const root = document.querySelector('main')
-
-// Append the DummyComponent to the root element.
-ReactDOM.render(<DummyComponent />, root)
+ReactDOM.render(
+  <App />,
+  document.getElementById('root')
+);
