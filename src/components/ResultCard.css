@@ -1,13 +1,13 @@
 .cardLayout {
-  margin: 0.5em;
+  margin: 0.5rem;
 }
 
 .tags {
-  margin: 0 0.5em 0.5em 0.5em;
+  margin: 0 0.5rem 0.5rem 0.5rem;
 }
 
 .tag {
-  margin-right: 0.5em;
+  margin-right: 0.5rem;
 }
 
 .example {
