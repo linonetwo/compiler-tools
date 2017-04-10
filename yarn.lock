@@ -1780,6 +1780,10 @@ dotenv@2.0.0:
   version "2.0.0"
   resolved "http://registry.npm.taobao.org/dotenv/download/dotenv-2.0.0.tgz#bd759c357aaa70365e01c96b7b0bec08a6e0d949"
 
+dumpjs@^0.2.1:
+  version "0.2.1"
+  resolved "http://registry.npm.taobao.org/dumpjs/download/dumpjs-0.2.1.tgz#2242190ef8463fb38db852576e5c254f2c67ab87"
+
 duplexer2@0.0.2:
   version "0.0.2"
   resolved "http://registry.npm.taobao.org/duplexer2/download/duplexer2-0.0.2.tgz#c614dcf67e2fb14995a91711e5a617e8a60a31db"
@@ -3656,9 +3660,20 @@ jsesc@~0.5.0:
   version "0.5.0"
   resolved "http://registry.npm.taobao.org/jsesc/download/jsesc-0.5.0.tgz#e7dee66e35d6fc16f710fe91d5cf69f70f08911d"
 
+json-filter@0.0.2:
+  version "0.0.2"
+  resolved "http://registry.npm.taobao.org/json-filter/download/json-filter-0.0.2.tgz#878537af18130f9e31945784b2dacde724a208ef"
+
 json-loader@0.5.4:
   version "0.5.4"
   resolved "http://registry.npm.taobao.org/json-loader/download/json-loader-0.5.4.tgz#8baa1365a632f58a3c46d20175fc6002c96e37de"
+
+json-predicate@^0.9.5:
+  version "0.9.5"
+  resolved "http://registry.npm.taobao.org/json-predicate/download/json-predicate-0.9.5.tgz#56d5709aa9a60fb4da9097828a18211037e721c5"
+  dependencies:
+    lodash "^4.6.1"
+    valid-url "^1.0.9"
 
 json-schema@0.2.3:
   version "0.2.3"
@@ -3945,7 +3960,7 @@ lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "http://registry.npm.taobao.org/lodash.uniq/download/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
 
-"lodash@>=3.5 <5", lodash@^4.0.0, lodash@^4.14.0, lodash@^4.15.0, lodash@^4.16.4, lodash@^4.17.2, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.3.0:
+"lodash@>=3.5 <5", lodash@^4.0.0, lodash@^4.14.0, lodash@^4.15.0, lodash@^4.16.4, lodash@^4.17.2, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.6.1:
   version "4.17.4"
   resolved "http://registry.npm.taobao.org/lodash/download/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
@@ -3981,6 +3996,10 @@ lru-cache@^4.0.1:
   dependencies:
     pseudomap "^1.0.1"
     yallist "^2.0.0"
+
+lzma@^2.3.2:
+  version "2.3.2"
+  resolved "http://registry.npm.taobao.org/lzma/download/lzma-2.3.2.tgz#3783b24858b9c0e747a0df3cbf1fb5fcaa92c441"
 
 macaddress@^0.2.8:
   version "0.2.8"
@@ -4902,7 +4921,7 @@ progress@^1.1.8:
   version "1.1.8"
   resolved "http://registry.npm.taobao.org/progress/download/progress-1.1.8.tgz#e260c78f6161cdd9b0e56cc3e0a85de17c7a57be"
 
-promise@7.1.1, promise@^7.1.1:
+promise@7.1.1, "promise@>=3.2 <8", promise@^7.1.1:
   version "7.1.1"
   resolved "http://registry.npm.taobao.org/promise/download/promise-7.1.1.tgz#489654c692616b8aa55b0724fa809bb7db49c5bf"
   dependencies:
@@ -5757,6 +5776,18 @@ symbol-tree@^3.2.1:
   version "3.2.2"
   resolved "http://registry.npm.taobao.org/symbol-tree/download/symbol-tree-3.2.2.tgz#ae27db38f660a7ae2e1c3b7d1bc290819b8519e6"
 
+synograph@^0.4.0:
+  version "0.4.0"
+  resolved "http://registry.npm.taobao.org/synograph/download/synograph-0.4.0.tgz#e18febaa99478a05f3096951e99f2d166b27224f"
+  dependencies:
+    co "^4.6.0"
+    dumpjs "^0.2.1"
+    json-filter "0.0.2"
+    json-predicate "^0.9.5"
+    lzma "^2.3.2"
+    then-fs "^2.0.0"
+    uuid "^3.0.1"
+
 table@^3.7.8:
   version "3.8.3"
   resolved "http://registry.npm.taobao.org/table/download/table-3.8.3.tgz#2bbc542f0fda9861a755d3947fefd8b3f513855f"
@@ -5810,6 +5841,12 @@ tether@^1.4:
 text-table@~0.2.0:
   version "0.2.0"
   resolved "http://registry.npm.taobao.org/text-table/download/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
+
+then-fs@^2.0.0:
+  version "2.0.0"
+  resolved "http://registry.npm.taobao.org/then-fs/download/then-fs-2.0.0.tgz#72f792dd9d31705a91ae19ebfcf8b3f968c81da2"
+  dependencies:
+    promise ">=3.2 <8"
 
 thenify-all@^1.0.0, thenify-all@^1.6.0:
   version "1.6.0"
@@ -6073,11 +6110,19 @@ uuid@^2.0.2:
   version "2.0.3"
   resolved "http://registry.npm.taobao.org/uuid/download/uuid-2.0.3.tgz#67e2e863797215530dff318e5bf9dcebfd47b21a"
 
+uuid@^3.0.1:
+  version "3.0.1"
+  resolved "http://registry.npm.taobao.org/uuid/download/uuid-3.0.1.tgz#6544bba2dfda8c1cf17e629a3a305e2bb1fee6c1"
+
 v8flags@^2.0.2:
   version "2.0.12"
   resolved "http://registry.npm.taobao.org/v8flags/download/v8flags-2.0.12.tgz#73235d9f7176f8e8833fb286795445f7938d84e5"
   dependencies:
     user-home "^1.1.1"
+
+valid-url@^1.0.9:
+  version "1.0.9"
+  resolved "http://registry.npm.taobao.org/valid-url/download/valid-url-1.0.9.tgz#1c14479b40f1397a75782f115e4086447433a200"
 
 validate-npm-package-license@^3.0.1:
   version "3.0.1"
