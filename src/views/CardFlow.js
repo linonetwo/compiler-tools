@@ -1,4 +1,4 @@
-import { forEach, xor, intersection } from 'lodash'
+import { forEach } from 'lodash'
 import React from 'react'
 import Gun from 'gun'
 
