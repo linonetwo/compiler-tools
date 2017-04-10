@@ -6,6 +6,10 @@
   margin: 0 0.5em 0.5em 0.5em;
 }
 
+.tag {
+  margin-right: 0.5em;
+}
+
 .example {
   background-color: rgba(102,158,255, 0.2);
 }
