@@ -1,14 +1,20 @@
-const fs = require('fs-promise')
 const gulp = require('gulp')
+const run = require('gulp-run')
+const replace = require('gulp-replace')
+const inlinesource = require('gulp-inline-source')
+const fs = require('fs-promise')
 const del = require('del')
 const Promise = require('bluebird')
 const _ = require('lodash')
 
 gulp.task('clean', function (cb) {
-  return del(['./knowledge_modules/programming-languages-and-compilers/build'])
+  return del([
+    './knowledge_modules/programming-languages-and-compilers/build',
+    './build'
+  ])
 })
 
-gulp.task('build', ['clean'], async function () {
+gulp.task('build-klg', ['clean'], async function () {
   const basePath = './knowledge_modules/programming-languages-and-compilers'
 
   await fs.mkdir(`${basePath}/build`)
@@ -36,3 +42,17 @@ gulp.task('build', ['clean'], async function () {
 
   await fs.writeFile(`${basePath}/build/main.json`, JSON.stringify(result))
 })
+
+gulp.task('build-web', ['build-klg'], function () {
+  return run('npm run build').exec()
+})
+
+gulp.task('inline', ['build-web'], function () {
+  return gulp.src('./build/index.html')
+    .pipe(replace('.js"></script>', '.js" inline></script>'))
+    .pipe(replace('rel="stylesheet">', 'rel="stylesheet" inline>'))
+    .pipe(inlinesource())
+    .pipe(gulp.dest('./build'))
+})
+
+gulp.task('build', ['inline'])
