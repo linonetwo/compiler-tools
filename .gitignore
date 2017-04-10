@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/knowledge_modules
 
 # testing
 /coverage

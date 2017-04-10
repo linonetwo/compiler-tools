@@ -20,6 +20,7 @@
   "private": false,
   "dependencies": {
     "@blueprintjs/core": "^1.14.0",
+    "bluebird": "^3.5.0",
     "flow-runtime": "^0.10.0",
     "lodash": "^4.17.4",
     "react": "^15.5.3",
