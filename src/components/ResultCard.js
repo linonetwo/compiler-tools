@@ -49,8 +49,8 @@ export class ResultCard extends React.Component {
       </nav>
         {
           this.state.showExample
-          ? this.holdWidthHeight(<Markdown className="example markdown-left upper" source={this.props.example} />)
-          : this.holdWidthHeight(<Markdown className="principle lower" source={this.props.principle} />)
+          ? <Markdown className="example markdown-left upper" source={this.props.example} />
+          : <Markdown className="principle lower" source={this.props.principle} />
         }
       </section>
     )
