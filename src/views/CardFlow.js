@@ -8,7 +8,11 @@ export class CardFlow extends React.Component {
   render () {
     return (
       <article>
-        <ResultCard example={plcKnowledge.tests.example} principle={plcKnowledge.tests.principle} />
+        <ResultCard
+          tags={plcKnowledge.tests.tags}
+          example={plcKnowledge.tests.example}
+          principle={plcKnowledge.tests.principle}
+        />
       </article>
     )
   }
