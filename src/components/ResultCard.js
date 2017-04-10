@@ -3,14 +3,23 @@ import React from 'react'
 import Markdown from 'react-markdown'
 
 import '@blueprintjs/core/dist/blueprint.css'
-
-import input from '../../knowledge_modules/programming-languages-and-compilers/build/main'
+import './ResultCard.css'
 
 export class ResultCard extends React.Component {
+  state = {
+    showExample: true,
+  }
   render () {
     return (
-      <section className="pt-card pt-elevation-2 pt-interactive">
-        <Markdown source={input.test.example} />
+      <section
+        onClick={() => this.setState({ showExample: !this.state.showExample })}
+        className="cardLayout pt-card pt-elevation-2 pt-interactive"
+      >
+        {
+          this.state.showExample
+          ? <Markdown className="example markdown-left upper" source={this.props.example} />
+          : <Markdown className="principle lower" source={this.props.example} />
+        }
       </section>
     )
   }
