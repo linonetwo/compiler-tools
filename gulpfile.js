@@ -2,6 +2,7 @@ const fs = require('fs-promise')
 const gulp = require('gulp')
 const del = require('del')
 const Promise = require('bluebird')
+const _ = require('lodash')
 
 gulp.task('clean', function (cb) {
   return del(['./knowledge_modules/programming-languages-and-compilers/build'])
@@ -25,7 +26,7 @@ gulp.task('build', ['clean'], async function () {
 
     resultObject[currentDirName] = {
       title: currentDirName,
-      tags: tags.length > 0 ? tags.split(',') : [],
+      tags: _.uniq(tags.length > 0 ? tags.split(',') : []),
       example,
       principle
     }

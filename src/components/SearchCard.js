@@ -1,3 +1,4 @@
+import { xor } from 'lodash'
 import React from 'react'
 
 import '@blueprintjs/core/dist/blueprint.css'
@@ -5,16 +6,32 @@ import './SearchCard.css'
 
 
 export class SearchCard extends React.Component {
-
   static defaultProps = {
     tags: [],
+  }
+
+  state = {
+    selectedTags: [],
+  }
+
+  selectTag = (tag) => {
+    this.setState({
+      selectedTags: xor(this.state.selectedTags, [tag])
+    })
   }
 
   render () {
     return (
       <div className="cardLayout pt-card pt-elevation-4">
         <nav className="tags">
-          {this.props.tags.map(tag => <span key={tag} className="tag pt-tag pt-round pt-large">{tag}</span>)}
+          {this.props.tags.map(tag =>
+            <span
+              key={tag}
+              onClick={() => this.selectTag(tag)}
+              className={`tag pt-tag pt-round pt-large ${this.state.selectedTags.includes(tag) ? 'pt-intent-primary' : ''}`}
+            >
+              {tag}
+            </span>)}
         </nav>
         <input className="pt-input inputLayout" placeholder="Search files..." type="text" />
       </div>
