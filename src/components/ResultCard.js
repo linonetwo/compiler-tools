@@ -38,7 +38,6 @@ export class ResultCard extends React.Component {
   </Measure>
 
   render () {
-        console.log(this.props.tags)
     return (
       <section
         onClick={() => this.setState({ showExample: !this.state.showExample })}

@@ -1,4 +1,4 @@
-import { forEach } from 'lodash'
+import { forEach, xor, intersection } from 'lodash'
 import React from 'react'
 import Gun from 'gun'
 
@@ -25,7 +25,8 @@ forEach(plcKnowledge, (item) => {
 export class CardFlow extends React.Component {
   state = {
     tags: [],
-    results: []
+    results: [],
+    selectedTags: [],
   }
 
   componentDidMount () {
@@ -41,10 +42,23 @@ export class CardFlow extends React.Component {
       }))
     })
   }
+
+  selectTag = (tag) => {
+    this.setState({
+      selectedTag: tag,
+      results: []
+    }, () =>
+    gun.get('tags').path(tag).map().val((notes, tag) => {
+      this.setState(prevState => ({
+        results: [...prevState.results, notes]
+      }))
+    }))
+  }
+
   render () {
     return (
       <article>
-        <SearchCard tags={this.state.tags} />
+        <SearchCard selectTag={this.selectTag} selectedTags={this.state.selectedTag} tags={this.state.tags} />
         {this.state.results.map(({ title, tags, example, principle }) =>
           <ResultCard
             key={title}
