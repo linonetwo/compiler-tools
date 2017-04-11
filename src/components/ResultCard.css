@@ -1,5 +1,7 @@
 .cardLayout {
   margin: 0.5rem;
+  overflow: scroll;
+  height: 100%;
 }
 
 .tags {
@@ -16,4 +18,8 @@
 
 .principle {
   background-color: rgba(61,204,145, 0.2)
+}
+
+.markdown img {
+  max-width: 100%;
 }

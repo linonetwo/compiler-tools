@@ -1,3 +1,4 @@
+import Promise from 'bluebird'
 import React from 'react'
 import Measure from 'react-measure'
 import Markdown from 'react-markdown'
@@ -6,9 +7,9 @@ import styled from 'styled-components'
 import '@blueprintjs/core/dist/blueprint.css'
 import './ResultCard.css'
 
-const HoldWidthHeight = styled.div`
+const ControlWidthHeight = styled.div`
   width: ${props => props.width}px;
-  height: ${props => props.height}px;
+  height: calc(${props => props.height}px + 100px);
 `
 
 export class ResultCard extends React.Component {
@@ -16,43 +17,49 @@ export class ResultCard extends React.Component {
     tags: [],
   }
   state = {
-    showExample: true,
+    showExample: false,
     dimensions: {
       width: -1,
       height: -1
     }
   }
 
-  holdWidthHeight = (elem) =>
+  async componentDidMount () {
+    await Promise.delay(500)
+    this.setState({ showExample: true })
+  }
+
+  measureHeight = (elem) =>
   <Measure
     onMeasure={(dimensions) => {
-      if (dimensions.width <= this.state.dimensions.width || dimensions.height <= this.state.dimensions.height) {
+      if (dimensions.height <= this.state.dimensions.height) {
         return
       }
       this.setState({dimensions})
     }}
   >
-    <HoldWidthHeight height={this.state.dimensions.height} width={this.state.dimensions.width}>
+
       {elem}
-    </HoldWidthHeight>
   </Measure>
 
   render () {
     return (
-      <section
-        onClick={() => this.setState({ showExample: !this.state.showExample })}
-        className="cardLayout pt-card pt-elevation-2 pt-interactive"
-      >
-      <nav className="tags">
-        {[<span key="isExample" className="tag pt-tag pt-intent-primary pt-round">{this.state.showExample ? 'example' : 'principle'}</span>,
-          ...this.props.tags.map(tag => <span key={tag} className="tag pt-tag pt-round">{tag}</span>)]}
-      </nav>
-        {
-          this.state.showExample
-          ? <Markdown className="example markdown-left upper" source={this.props.example} />
-          : <Markdown className="principle lower" source={this.props.principle} />
-        }
-      </section>
+      <ControlWidthHeight height={this.state.dimensions.height}>
+        <section
+          onClick={() => this.setState({ showExample: !this.state.showExample })}
+          className="cardLayout pt-card pt-elevation-2 pt-interactive"
+        >
+        <nav className="tags">
+          {[<span key="isExample" className="tag pt-tag pt-intent-primary pt-round">{this.state.showExample ? 'example' : 'principle'}</span>,
+            ...this.props.tags.map(tag => <span key={tag} className="tag pt-tag pt-round">{tag}</span>)]}
+        </nav>
+          {
+            this.state.showExample
+            ? this.measureHeight(<Markdown className="example markdown upper" source={this.props.example} />)
+            : this.measureHeight(<Markdown className="principle markdown lower" source={this.props.principle} />)
+          }
+        </section>
+    </ControlWidthHeight>
     )
   }
 }
