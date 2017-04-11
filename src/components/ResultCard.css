@@ -1,7 +1,11 @@
 .cardLayout {
-  margin: 0.5rem;
-  overflow: scroll;
+  margin: 1rem 0.5rem;
+  overflow: visible;
   height: 100%;
+}
+
+.cardLayout:active {
+  opacity: 0
 }
 
 .tags {
@@ -17,7 +21,7 @@
 }
 
 .principle {
-  background-color: rgba(61,204,145, 0.2)
+  background-color: rgba(61,204,145, 0.2);
 }
 
 .markdown img {

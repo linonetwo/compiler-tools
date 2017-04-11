@@ -24,8 +24,7 @@ export class ResultCard extends React.Component {
     }
   }
 
-  async componentDidMount () {
-    await Promise.delay(500)
+  componentDidMount () {
     this.setState({ showExample: true })
   }
 
@@ -46,8 +45,8 @@ export class ResultCard extends React.Component {
     return (
       <ControlWidthHeight height={this.state.dimensions.height}>
         <section
-          onClick={() => this.setState({ showExample: !this.state.showExample })}
-          className="cardLayout pt-card pt-elevation-2 pt-interactive"
+          onClick={async () => { await Promise.delay(200); this.setState({ showExample: !this.state.showExample }) }}
+          className="cardLayout pt-card pt-elevation-5 pt-interactive"
         >
         <nav className="tags">
           {[<span key="isExample" className="tag pt-tag pt-intent-primary pt-round">{this.state.showExample ? 'example' : 'principle'}</span>,

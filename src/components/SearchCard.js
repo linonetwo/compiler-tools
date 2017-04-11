@@ -12,7 +12,7 @@ export class SearchCard extends React.Component {
 
   render () {
     return (
-      <div className="cardLayout pt-card pt-elevation-4">
+      <div className="cardLayout pt-card pt-elevation-2">
         <nav className="tags">
           {this.props.tags.map(tag =>
             <span
