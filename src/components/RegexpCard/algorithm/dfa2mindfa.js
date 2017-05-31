@@ -8,10 +8,15 @@ const enumerateNodes = edges => {
 
 const procDfa = ({ dict, nodes, edges, terminals }) => {
   const states = nodes ? nodes.map(({ id }) => id) : enumerateNodes(edges)
-  const closure = states.reduce((p, id) => ((p[id] = dict.reduce((p, ch) => {
-    p[ch] = new Set(edges.filter(e => e.src === id && e.label === ch).map(({dest}) => dest))
-    return p
-  }, {})), p), {})
+  const closure = states
+    .reduce((previous, id) => {
+      previous[id] = dict.reduce((setToBuild, characterOnTheEdge) => {
+        const sameDestinations = edges.filter(anEdge => anEdge.src === id && anEdge.label === characterOnTheEdge).map(({dest}) => dest)
+        setToBuild[characterOnTheEdge] = new Set(sameDestinations)
+        return setToBuild
+      }, {})
+      return previous
+    }, {})
   return {dict, closure, states, terminals}
 }
 
@@ -29,11 +34,11 @@ const dfa2mindfa = (dfa, detail = false) => {
 
   for (let i = 0, change = true; i <= states.length && change; i++) {
     change = false
-    dict.map(ch => change || stateSets.map(stateSet => {
+    dict.map(character => change || stateSets.map(stateSet => {
       if (change) return
       const s = new Set()
       let hasEmpty = false
-      for (let ele of stateSet) { closure[ele][ch].size === 0 ? hasEmpty = true : s.addSet(closure[ele][ch]) }
+      for (let element of stateSet) { closure[element][character].size === 0 ? hasEmpty = true : s.addSet(closure[element][character]) }
 
       if (!s.size) { return } else if (!hasEmpty) {
         for (let curSet of stateSets) {
@@ -46,7 +51,7 @@ const dfa2mindfa = (dfa, detail = false) => {
 
       const splitSet = (() => {
         for (let splitState of stateSet) {
-          let clo = closure[splitState][ch]
+          let clo = closure[splitState][character]
           if (!clo.size) continue
 
           let ele = Array.from(clo)[0]
@@ -62,7 +67,7 @@ const dfa2mindfa = (dfa, detail = false) => {
         return
       }
 
-      const newSubset = stateSet.subset(state => closure[state][ch].size && closure[state][ch].subsetOf(splitSet))
+      const newSubset = stateSet.subset(state => closure[state][character].size && closure[state][character].subsetOf(splitSet))
       stateSet.diff(newSubset)
       stateSets.push(newSubset)
       change = true
@@ -93,9 +98,9 @@ const dfa2mindfa = (dfa, detail = false) => {
       return a
     }, [])
 
-  const nodeFmt = (s, i) => ({
-    id: i,
-    label: `${i}\n(${s.join()})`,
+  const nodeFmt = (s, index) => ({
+    id: index,
+    label: `${index}\n(${s.join()})`,
     terminal: terminals.some(t => s.indexOf(t) >= 0)
   })
 
