@@ -45,57 +45,56 @@ export class FirstFollowCard extends React.Component {
   </Measure>
 
   handleInputChange = (event) => {
-    const regexpInput = event.target.value.replace(/\s/g, '')
-    return new Promise(resolve => this.setState({ regexpInput }, resolve))
+    const rulesInput = event.target.value
+    return new Promise(resolve => this.setState({ rulesInput }, resolve))
   }
 
-  runAlgorithm = async (event) => {
-    if (event.charCode !== 13 || this.state.working) return
+  runAlgorithm = async () => {
+    if (this.state.working) return
 
-    if (event.charCode === 13) {
-      this.setState({ working: true, errorMessage: '' })
-      try {
+    this.setState({ working: true, errorMessage: '' })
+    try {
+      const lines = this.state.rulesInput.split('\n').map(aLine => aLine.replace(/\s/g, '')).filter(line => !!line)
+      console.log(lines)
+      const grammarInput = lines.map(aLine => {
+        const [left, rightString] = aLine.split('->')
+        const right = rightString.split('').map(character => character === 'ε' ? null : character)
+        return {
+          left,
+          right
+        }
+      })
       // 为了在未来能进一步为客户提升算法效率，先延迟 100 毫秒
-        await Promise.delay(100)
-        const grammar = new Grammar([
-          {
-            left: 'S',
-            right: ['a', 'b', 'A']
-          },
-          {
-            left: 'A',
-            right: ['b', 'c']
-          },
-          {
-            left: 'A',
-            right: [null]
-          }
-        ])
+      await Promise.delay(100)
+      const grammar = new Grammar(grammarInput)
 
-        this.setState({
-          firstSet: grammar.getFirstSetHash(),
-          followSet: grammar.getFollowSetHash(),
-          predictSet: grammar.getPredictSets(),
-          working: false
-        })
-      } catch (error) {
-        this.setState({
-          errorMessage: error.toString(),
-          firstSet: {},
-          followSet: {},
-          predictSet: {},
-          working: false
-        })
-      }
+      this.setState({
+        firstSet: grammar.getFirstSetHash(),
+        followSet: grammar.getFollowSetHash(),
+        predictSet: grammar.getPredictSets(),
+        working: false
+      })
+    } catch (error) {
+      this.setState({
+        errorMessage: error.toString(),
+        firstSet: {},
+        followSet: {},
+        predictSet: {},
+        working: false
+      })
+      console.warn(error)
     }
   }
 
   giveExample = async () => {
     // 如果输入框不为空，就直接运行输入框中的内容，防止误触
-    if (!this.state.regexpInput) {
-      await this.handleInputChange({target: {value: '林(东*吴)*|(吴东)*林'}})
+    if (!this.state.rulesInput) {
+      await this.handleInputChange({target: {value: `S -> abA
+A -> bc
+A -> ε
+      `}})
     }
-    this.runAlgorithm({charCode: 13})
+    this.runAlgorithm()
   }
 
   render () {
@@ -110,15 +109,13 @@ export class FirstFollowCard extends React.Component {
         </nav>
         {this.measureHeight(
         <article>
-          <input
+          <textarea
             onChange={this.handleInputChange}
-            onKeyPress={this.runAlgorithm}
-            value={this.state.regexpInput}
-            type="text"
-            id="regexpInput"
-            placeholder="在此输入正则表达式并回车"
+            value={this.state.rulesInput}
+            id="rulesInput"
+            placeholder="在此输入BNF并回车"
           />
-          <button onClick={this.giveExample}>{this.state.working ? '等' : '例'}</button>
+          <button onClick={this.giveExample}>{this.state.working ? '等' : '跑'}</button>
           <br/>
           {this.state.errorMessage || <div>
               <RenderSet name="first" set={this.state.firstSet}/>

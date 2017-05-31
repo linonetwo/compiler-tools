@@ -1,5 +1,5 @@
 import React from 'react'
-import { forEach } from 'lodash'
+import { forEach, size } from 'lodash'
 import styled from 'styled-components'
 
 const Result = styled.div`
@@ -17,7 +17,7 @@ export default function RenderSet ({ set, name }) {
   })
   return (
     <Result>
-      <text>{name}</text>
+      <text>{size(set) > 0 ? name : ''}</text>
       {
         lines.map(aLine => <text key={aLine}>
           {aLine}
