@@ -4,6 +4,7 @@ import Gun from 'gun'
 
 import { ResultCard } from '../components/ResultCard'
 import { RegexpCard } from '../components/RegexpCard'
+import { FirstFollowCard } from '../components/FirstFollowCard'
 import { SearchCard } from '../components/SearchCard'
 
 import plcKnowledge from '../../knowledge_modules/compiler/build/main'
@@ -61,6 +62,7 @@ export class CardFlow extends React.Component {
       <article>
         <SearchCard selectTag={this.selectTag} selectedTags={this.state.selectedTag} tags={this.state.tags} />
           <RegexpCard />
+          <FirstFollowCard />
         {this.state.results.map(({ title, tags, example, principle }) =>
           <ResultCard
             key={title}

@@ -2492,6 +2492,12 @@ first-chunk-stream@^1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/first-chunk-stream/download/first-chunk-stream-1.0.0.tgz#59bfb50cd905f60d7c394cd3d9acaab4e6ad934e"
 
+first-follow@^1.2.0:
+  version "1.2.0"
+  resolved "http://registry.npm.taobao.org/first-follow/download/first-follow-1.2.0.tgz#df082ecce385babc0963098a934986318d1a2fcc"
+  dependencies:
+    underscore "1.8.3"
+
 flagged-respawn@^0.3.2:
   version "0.3.2"
   resolved "http://registry.npm.taobao.org/flagged-respawn/download/flagged-respawn-0.3.2.tgz#ff191eddcd7088a675b2610fffc976be9b8074b5"
@@ -6110,6 +6116,10 @@ ultron@~1.1.0:
 unc-path-regex@^0.1.0:
   version "0.1.2"
   resolved "http://registry.npm.taobao.org/unc-path-regex/download/unc-path-regex-0.1.2.tgz#e73dd3d7b0d7c5ed86fbac6b0ae7d8c6a69d50fa"
+
+underscore@1.8.3:
+  version "1.8.3"
+  resolved "http://registry.npm.taobao.org/underscore/download/underscore-1.8.3.tgz#4f3fb53b106e6097fcf9cb4109f2a5e9bdfa5022"
 
 underscore@~1.4.4:
   version "1.4.4"
