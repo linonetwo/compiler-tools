@@ -3,9 +3,10 @@ import React from 'react'
 import Gun from 'gun'
 
 import { ResultCard } from '../components/ResultCard'
+import { RegexpCard } from '../components/RegexpCard'
 import { SearchCard } from '../components/SearchCard'
 
-import plcKnowledge from '../../knowledge_modules/programming-languages-and-compilers/build/main'
+import plcKnowledge from '../../knowledge_modules/compiler/build/main'
 
 const gun = Gun()
 
@@ -59,6 +60,7 @@ export class CardFlow extends React.Component {
     return (
       <article>
         <SearchCard selectTag={this.selectTag} selectedTags={this.state.selectedTag} tags={this.state.tags} />
+          <RegexpCard />
         {this.state.results.map(({ title, tags, example, principle }) =>
           <ResultCard
             key={title}

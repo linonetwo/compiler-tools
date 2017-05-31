@@ -7,16 +7,16 @@ const del = require('del')
 const Promise = require('bluebird')
 const _ = require('lodash')
 
+const basePath = './knowledge_modules/compiler'
+
 gulp.task('clean', function (cb) {
   return del([
-    './knowledge_modules/programming-languages-and-compilers/build',
+    `${basePath}/build`,
     './build'
   ])
 })
 
 gulp.task('build-klg', ['clean'], async function () {
-  const basePath = './knowledge_modules/programming-languages-and-compilers'
-
   await fs.mkdir(`${basePath}/build`)
   const topics = await fs.readdir(`${basePath}/src`)
 
