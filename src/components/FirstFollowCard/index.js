@@ -2,6 +2,7 @@ import Promise from 'bluebird'
 import React from 'react'
 import Measure from 'react-measure'
 import styled from 'styled-components'
+import { EditableText, Button } from '@blueprintjs/core'
 
 import { Grammar } from 'first-follow'
 
@@ -109,13 +110,15 @@ A -> ε
         </nav>
         {this.measureHeight(
         <article>
-          <textarea
+          <EditableText
+            multiline
+            minLines={5}
             onChange={this.handleInputChange}
             value={this.state.rulesInput}
             id="rulesInput"
             placeholder="在此输入BNF并回车"
           />
-          <button onClick={this.giveExample}>{this.state.working ? '等' : '跑'}</button>
+          <Button onClick={this.giveExample} text={this.state.working ? '等' : '跑'}/>
           <br/>
           {this.state.errorMessage || <div>
               <RenderSet name="first" set={this.state.firstSet}/>

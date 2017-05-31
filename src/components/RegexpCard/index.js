@@ -2,6 +2,7 @@ import Promise from 'bluebird'
 import React from 'react'
 import Measure from 'react-measure'
 import styled from 'styled-components'
+import { EditableText, Button } from '@blueprintjs/core'
 
 
 import { regexp2nfa, nfa2dfa, dfa2mindfa, getGraph } from './algorithm'
@@ -105,7 +106,8 @@ export class RegexpCard extends React.Component {
         </nav>
         {this.measureHeight(
         <article>
-          <input
+          <EditableText
+            minWidth="400"
             onChange={this.handleInputChange}
             onKeyPress={this.runAlgorithm}
             value={this.state.regexpInput}
@@ -113,7 +115,7 @@ export class RegexpCard extends React.Component {
             id="regexpInput"
             placeholder="在此输入正则表达式并回车"
           />
-          <button onClick={this.giveExample}>{this.state.working ? '等' : '例'}</button>
+          <Button onClick={this.giveExample} text={this.state.working ? '等' : '例'}/>
           <br/>
           {this.state.errorMessage || <GraphViews style={{ height: 800 }} graphs={this.state.graphs} />}
         </article>)}
