@@ -1,11 +1,11 @@
-import { trans, EPS } from './state'
+import { getNode } from './state'
 
 const createTerm = head => ({ h: head, t: head, p: [] })
 
 const mergeSub = (subterms, h, t, store) => subterms.map(subterm => {
-  store.push(trans(h, subterm.h, EPS))
+  store.push(getNode(h, subterm.h, 'ε'))
   store.push.apply(store, subterm.p)
-  store.push(trans(subterm.t, t, EPS))
+  store.push(getNode(subterm.t, t, 'ε'))
 })
 
 
@@ -18,7 +18,7 @@ const constructNfa = (state) => {
     let c = state.exp[state.position++]
     switch (c) {
       case '*':
-        throw new Error(`在${state.position}位置有一个意义不明的 *`)
+        throw new Error(`第${state.position}个字符 * 意义不明，应该是打错了`)
       case '|':
         if (term.p.length) { terms.push(term) }
         term = createTerm(state.stateCount++)
@@ -28,7 +28,7 @@ const constructNfa = (state) => {
         i = state.stateCount++
         if (state.exp[state.position] === '*') {
           state.position++
-          term.p.push(trans(term.t, i, EPS))
+          term.p.push(getNode(term.t, i, 'ε'))
           mergeSub(subterms, term.t, term.t, term.p)
         } else {
           mergeSub(subterms, term.t, i, term.p)
@@ -44,10 +44,10 @@ const constructNfa = (state) => {
         i = state.stateCount++
         if (state.exp[state.position] === '*') {
           state.position++
-          term.p.push(trans(term.t, i, EPS))
-          term.p.push(trans(term.t, term.t, c))
+          term.p.push(getNode(term.t, i, 'ε'))
+          term.p.push(getNode(term.t, term.t, c))
         } else {
-          term.p.push(trans(term.t, i, c))
+          term.p.push(getNode(term.t, i, c))
         }
         term.t = i
     }
@@ -66,7 +66,7 @@ const regexp2nfa = (exp) => {
   if (state.stateCount > 1) {
     mergeSub(nfa, 0, state.stateCount, edges)
   } else {
-    throw new Error('空的表达式')
+    throw new Error('空的表达式，林东吴没在前端做好错误处理')
   }
 
   if (state.position - exp.length !== 1) {

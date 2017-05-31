@@ -36,6 +36,4 @@ Set.prototype.subsetOf = function (s) {
   return true;
 }
 
-export const EPS = -1;
-
-export const trans = (src, dest, label) => ({ src, dest, label });
+export const getNode = (src, dest, label) => ({ src, dest, label });

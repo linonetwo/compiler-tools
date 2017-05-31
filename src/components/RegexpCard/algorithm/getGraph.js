@@ -1,6 +1,5 @@
 import Viz from 'viz.js'
 
-import { EPS } from './state'
 import { SPECIAL_TYPE, EMPTY_TYPE, SPECIAL_CHILD_SUBTYPE, SPECIAL_EDGE_TYPE, EMPTY_EDGE_TYPE } from '../GraphViews'
 
 type edges = Array<{src: string, dest: string, label: string}>
@@ -10,7 +9,7 @@ type props = {edges: edges, nodes: nodes, terminals: terminals}
 
 export function getGraphDescription ({ edges, terminals, nodes }: props) {
   const edgeDefination = edges
-    .map(({ src, dest, label }) => `${src} -> ${dest} [ label="${label === EPS ? '&epsilon;' : label}" ];`)
+    .map(({ src, dest, label }) => `${src} -> ${dest} [ label="${label === 'ε' ? '&epsilon;' : label}" ];`)
     .join('')
   const nodeDefination = nodes
   ? nodes

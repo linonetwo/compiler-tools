@@ -24,6 +24,7 @@ export class RegexpCard extends React.Component {
   }
   state = {
     working: false,
+    errorMessage: '',
     graphs: [],
     regexpInput: '',
     dimensions: {
@@ -41,6 +42,9 @@ export class RegexpCard extends React.Component {
     }
   }
 
+  componentDidMount () {
+    this.giveExample()
+  }
 
   measureHeight = (elem) =>
   <Measure
@@ -61,35 +65,41 @@ export class RegexpCard extends React.Component {
   }
 
   runAlgorithm = async (event) => {
-    if (this.state.working) return
-
-    this.setState({ working: true, graphs: [] })
+    if (event.charCode !== 13 || this.state.working) return
 
     if (event.charCode === 13) {
-      const graphs = []
+      this.setState({ working: true, graphs: [], errorMessage: '' })
+      try {
+        const graphs = []
       // 为了在未来能进一步为客户提升算法效率，先延迟 100 毫秒
-      await Promise.delay(100)
-      const nfa = regexp2nfa(this.state.regexpInput)
-      const nfaXml = getGraph(nfa)
-      graphs.push({name: 'NFA', xml: nfaXml})
-      this.setState({ graphs })
+        await Promise.delay(100)
+        const nfa = regexp2nfa(this.state.regexpInput)
+        const nfaXml = getGraph(nfa)
+        graphs.push({name: 'NFA', xml: nfaXml})
+        this.setState({ graphs })
       // 将同步任务拆到不久的未来的事件循环，塑造出不卡的错觉
-      await Promise.delay(10)
-      const dfa = nfa2dfa(nfa)
-      const dfaXml = getGraph(dfa)
-      graphs.push({name: 'DFA', xml: dfaXml})
-      this.setState({ graphs })
+        await Promise.delay(10)
+        const dfa = nfa2dfa(nfa)
+        const dfaXml = getGraph(dfa)
+        graphs.push({name: 'DFA', xml: dfaXml})
+        this.setState({ graphs })
       // 异步加载最后一个图
-      await Promise.delay(10)
-      const mindfa = dfa2mindfa(dfa)
-      const mindfaXml = getGraph(mindfa)
-      graphs.push({name: 'minified DFA', xml: mindfaXml})
-      this.setState({ graphs, working: false })
+        await Promise.delay(10)
+        const mindfa = dfa2mindfa(dfa)
+        const mindfaXml = getGraph(mindfa)
+        graphs.push({name: 'minified DFA', xml: mindfaXml})
+        this.setState({ graphs, working: false })
+      } catch (error) {
+        this.setState({ errorMessage: error.toString(), graphs: [], working: false })
+      }
     }
   }
 
   giveExample = async () => {
-    await this.handleInputChange({target: {value: '林(东*吴)*|(吴东)*林'}})
+    // 如果输入框不为空，就直接运行输入框中的内容，防止误触
+    if (!this.state.regexpInput) {
+      await this.handleInputChange({target: {value: '林(东*吴)*|(吴东)*林'}})
+    }
     this.runAlgorithm({charCode: 13})
   }
 
@@ -106,17 +116,16 @@ export class RegexpCard extends React.Component {
         {this.measureHeight(
         <article>
           <input
+            onChange={this.handleInputChange}
             onKeyPress={this.runAlgorithm}
             value={this.state.regexpInput}
             type="text"
             id="regexpInput"
-            placeholder="在此输入正则表达式"
+            placeholder="在此输入正则表达式并回车"
           />
           <button onClick={this.giveExample}>{this.state.working ? '等' : '例'}</button>
-          <GraphViews
-            style={{ height: 800 }}
-            graphs={this.state.graphs}
-          />
+          <br/>
+          {this.state.errorMessage || <GraphViews style={{ height: 800 }} graphs={this.state.graphs} />}
         </article>)}
         </section>
     </ControlWidthHeight>

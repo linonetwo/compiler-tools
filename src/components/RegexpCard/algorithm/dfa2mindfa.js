@@ -1,8 +1,8 @@
-import {trans, EPS} from './state'
+import {getNode} from './state'
 
 const enumerateNodes = edges => {
   const s = new Set()
-  edges.map(({src, dest}) => (s.add(src), s.add(dest)))
+  edges.forEach(({src, dest}) => { s.add(src); s.add(dest) })
   return Array.from(s)
 }
 
@@ -86,7 +86,7 @@ const dfa2mindfa = (dfa, detail = false) => {
 
   const edgeComp = (a, b) => a.src - b.src || a.dest - b.dest || (a.label < b.label ? -1 : a.label > b.label ? 1 : 0)
 
-  const edges = dfa.edges.map(e => trans(stateMap[e.src], stateMap[e.dest], e.label))
+  const edges = dfa.edges.map(e => getNode(stateMap[e.src], stateMap[e.dest], e.label))
     .sort(edgeComp)
     .reduce((a, e, i, arr) => {
       if (!i || edgeComp(e, arr[i - 1])) a.push(e)

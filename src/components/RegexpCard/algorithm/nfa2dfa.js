@@ -1,58 +1,73 @@
-import {trans, EPS} from './state'
+import {getNode} from './state'
 
 const newState = (index, nfaStates, isTerminal) => ({index, nfaStates, isTerminal})
 
 const procNfa = ({states, edges, terminals, dict}) => {
-  const adjecent = ch => edges.filter(e => e.label === ch)
-    .reduce((p, c) => (p[c.src].add(c.dest), p), states.reduce((p, i) => ((p[i] = new Set()), p), {}))
+  const adjecent = characterInTheEdge => {
+    const emptySets = states.reduce((prev, stateIndex) => {
+      prev[stateIndex] = new Set()
+      return prev
+    }, {})
+    return edges
+      .filter(edge => edge.label === characterInTheEdge)
+      .reduce((previous, current) => {
+        previous[current.src].add(current.dest)
+        return previous
+      }, emptySets)
+  }
 
-  const eClosure = adjecent(EPS)
-  for (let i = 0, change = true; i < states.length && change; i++) {
+  const εClosure = adjecent('ε')
+  for (let index = 0, change = true; index < states.length && change; index++) {
     change = false
     states.map(st => {
-      const s = eClosure[st]
+      const s = εClosure[st]
       const size = s.size
       s.add(st)
-      s.forEach(e => s.addSet(eClosure[e]))
+      s.forEach(e => s.addSet(εClosure[e]))
       change = change || s.size > size
     })
   }
 
-  const trans = dict.map(adjecent).map(trans => {
-    states.map(st => {
-      const s = new Set()
-      eClosure[st].forEach(ele => s.addSet(trans[ele]))
-      s.forEach(ele => s.addSet(eClosure[ele]))
-      trans[st] = s
+  const trans = dict
+    .map(adjecent)
+    .map(trans => {
+      states.map(st => {
+        const s = new Set()
+        εClosure[st].forEach(ele => s.addSet(trans[ele]))
+        s.forEach(ele => s.addSet(εClosure[ele]))
+        trans[st] = s
+      })
+      return trans
     })
-    return trans
-  })
 
-  const closure = dict.reduce((cl, ch, i) => (cl[ch] = trans[i], cl), {})
-  closure[EPS] = eClosure
+  const closure = dict.reduce((closureToBuild, characterInTheEdge, index) => {
+    closureToBuild[characterInTheEdge] = trans[index]
+    return closureToBuild
+  }, {})
+  closure['ε'] = εClosure
 
   return {closure, dict, terminals}
 }
 
 const nfa2dfa = (nfa, detail = false) => {
   const { closure, dict, terminals } = procNfa(nfa)
-  const states = [closure[EPS][0]]
-  const newState = [closure[EPS][0]]
+  const states = [closure['ε'][0]]
+  const newState = [closure['ε'][0]]
   const edges = []
 
   while (newState.length) {
     const curState = newState.shift()
     const src = states.indexOf(curState)
-    dict.map(ch => {
+    dict.map(characterInTheEdge => {
       let nxtState = new Set()
-      curState.forEach(s => nxtState.addSet(closure[ch][s]))
+      curState.forEach(s => nxtState.addSet(closure[characterInTheEdge][s]))
       if (!nxtState.size) { return } // no feasible path
       let dest = states.findIndex(s => s.eq(nxtState))
       if (dest < 0) {
         newState.push(nxtState)
         dest = states.push(nxtState) - 1
       }
-      edges.push(trans(src, dest, ch))
+      edges.push(getNode(src, dest, characterInTheEdge))
     })
   }
 
