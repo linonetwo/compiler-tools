@@ -85,7 +85,7 @@ const dfa2mindfa = (dfa, detail = false) => {
   })
 
   const stateMap = newStates.reduce((map, newState, i) => {
-    newState.map(p => map[p] = i)
+    newState.forEach(p => { map[p] = i })
     return map
   }, {})
 

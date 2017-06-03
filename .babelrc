@@ -1,0 +1,10 @@
+{
+  "presets": [
+    "react-app"
+  ],
+  "plugins": [
+    ["babel-plugin-transform-builtin-extend", {
+      "globals": ["Error", "Set"]
+    }]
+  ]
+}
