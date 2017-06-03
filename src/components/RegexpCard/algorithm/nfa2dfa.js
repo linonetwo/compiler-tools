@@ -59,13 +59,13 @@ const nfa2dfa = (nfa, detail = false) => {
     const curState = newState.shift()
     const src = states.indexOf(curState)
     dict.map(characterInTheEdge => {
-      let nxtState = new StateSet()
-      curState.forEach(s => nxtState.addSet(closure[characterInTheEdge][s]))
-      if (!nxtState.size) { return } // no feasible path
-      let dest = states.findIndex(s => s.eq(nxtState))
+      let nextState = new StateSet()
+      curState.forEach(s => nextState.addSet(closure[characterInTheEdge][s]))
+      if (!nextState.size) { return } // no feasible path
+      let dest = states.findIndex(s => s.equal(nextState))
       if (dest < 0) {
-        newState.push(nxtState)
-        dest = states.push(nxtState) - 1
+        newState.push(nextState)
+        dest = states.push(nextState) - 1
       }
       edges.push(getEdge(src, dest, characterInTheEdge))
     })

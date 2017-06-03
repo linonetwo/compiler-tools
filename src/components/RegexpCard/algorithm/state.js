@@ -5,37 +5,37 @@ export class StateSet extends Set {
     return this
   }
 
-  addSet = (s) => {
-    for (let ele of s) this.add(ele)
+  addSet = (set) => {
+    for (const element of set) this.add(element)
     return this
   }
 
-  eq = (s) => {
-    if (!s || this.size !== s.size) { return false }
-    for (let ele of this) {
-      if (!s.has(ele)) { return false }
+  equal = (set) => {
+    if (!set || this.size !== set.size) { return false }
+    for (const element of this) {
+      if (!set.has(element)) { return false }
     }
     return true
   }
 
-  diff = (s) => {
-    for (let ele of s) {
-      if (this.has(ele)) { this.delete(ele) }
+  diff = (set) => {
+    for (const element of set) {
+      if (this.has(element)) { this.delete(element) }
     }
     return this
   }
 
   subset = (pred) => {
-    const s = new StateSet()
-    for (let ele of this) {
-      if (pred(ele)) { s.add(ele) }
+    const set = new StateSet()
+    for (const element of this) {
+      if (pred(element)) { set.add(element) }
     }
-    return s
+    return set
   }
 
-  subsetOf = (s) => {
-    for (let ele of this) {
-      if (!s.has(ele)) { return false }
+  subsetOf = (set) => {
+    for (const element of this) {
+      if (!set.has(element)) { return false }
     }
     return true
   }
