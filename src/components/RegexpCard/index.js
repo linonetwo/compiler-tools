@@ -92,7 +92,7 @@ export class RegexpCard extends React.Component {
   giveExample = async () => {
     // 如果输入框不为空，就直接运行输入框中的内容，防止误触
     if (!this.state.regexpInput) {
-      await this.handleInputChange('林(东*吴)*|(吴东)*林')
+      await this.handleInputChange('林(东*吴)*+(吴东)*林')
     }
     this.runAlgorithm({charCode: 13})
   }
