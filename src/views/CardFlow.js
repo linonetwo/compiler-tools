@@ -40,7 +40,7 @@ export class CardFlow extends React.Component {
 
     gun.get('tags').map().val((notes, tag) => {
       this.setState(prevState => ({
-        tags: [...prevState.tags, tag]
+        tags: [...prevState.tags, tag, 'app-regexp', 'app-firstfollow']
       }))
     })
   }
@@ -49,28 +49,32 @@ export class CardFlow extends React.Component {
     this.setState({
       selectedTag: tag,
       results: []
-    }, () =>
-    gun.get('tags').path(tag).map().val((notes, tag) => {
-      this.setState(prevState => ({
-        results: [...prevState.results, notes]
-      }))
-    }))
+    }, () => {
+      if (/^app-/.test(tag)) {
+        return
+      }
+      gun.get('tags').path(tag).map().val((notes, tag) => {
+        this.setState(prevState => ({
+          results: [...prevState.results, notes]
+        }))
+      })
+    })
   }
 
   render () {
     return (
       <article>
         <SearchCard selectTag={this.selectTag} selectedTags={this.state.selectedTag} tags={this.state.tags} />
-          <RegexpCard />
-          <FirstFollowCard />
-        {this.state.results.map(({ title, tags, example, principle }) =>
-          <ResultCard
-            key={title}
-            tags={tags.length > 0 ? tags.split(',') : []}
-            example={example}
-            principle={principle}
-          />
-        )}
+          {this.state.selectedTag === 'app-regexp' ? <RegexpCard /> : ''}
+          {this.state.selectedTag === 'app-firstfollow' ? <FirstFollowCard /> : ''}
+          {this.state.results.map(({ title, tags, example, principle }) =>
+            <ResultCard
+              key={title}
+              tags={tags.length > 0 ? tags.split(',') : []}
+              example={example}
+              principle={principle}
+            />
+          )}
       </article>
     )
   }
