@@ -50,12 +50,13 @@ export class RegexpCard extends React.Component {
       {elem}
   </Measure>
 
-  handleInputChange = (event) => {
-    const regexpInput = event.target.value.replace(/\s/g, '')
+  handleInputChange = (input) => {
+    const regexpInput = input.replace(/\s/g, '')
     return new Promise(resolve => this.setState({ regexpInput }, resolve))
   }
 
   runAlgorithm = async (event) => {
+    console.log(event.charCode)
     if (event.charCode !== 13 || this.state.working) return
 
     if (event.charCode === 13) {
@@ -64,6 +65,7 @@ export class RegexpCard extends React.Component {
         const graphs = []
       // 为了在未来能进一步为客户提升算法效率，先延迟 100 毫秒
         await Promise.delay(100)
+        console.log(this.state.regexpInput)
         const nfa = regexp2nfa(this.state.regexpInput)
         const nfaXml = getGraph(nfa)
         graphs.push({name: 'NFA', xml: nfaXml})
@@ -90,7 +92,7 @@ export class RegexpCard extends React.Component {
   giveExample = async () => {
     // 如果输入框不为空，就直接运行输入框中的内容，防止误触
     if (!this.state.regexpInput) {
-      await this.handleInputChange({target: {value: '林(东*吴)*|(吴东)*林'}})
+      await this.handleInputChange('林(东*吴)*|(吴东)*林')
     }
     this.runAlgorithm({charCode: 13})
   }
@@ -110,13 +112,12 @@ export class RegexpCard extends React.Component {
           <EditableText
             minWidth="400"
             onChange={this.handleInputChange}
-            onKeyPress={this.runAlgorithm}
             value={this.state.regexpInput}
             type="text"
             id="regexpInput"
             placeholder="在此输入正则表达式并回车"
           />
-          <Button onClick={this.giveExample} text={this.state.working ? '等' : '例'}/>
+          <Button onClick={this.giveExample} text={this.state.working ? '等' : '跑'}/>
           <br/>
           {this.state.errorMessage || <GraphViews style={{ height: 800 }} graphs={this.state.graphs} />}
         </article>)}

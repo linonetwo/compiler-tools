@@ -44,4 +44,4 @@ export class StateSet extends Set {
 
 
 
-export const getNode = (src, dest, label) => ({ src, dest, label })
+export const getEdge = (src: number, dest: number, label) => ({ src, dest, label })

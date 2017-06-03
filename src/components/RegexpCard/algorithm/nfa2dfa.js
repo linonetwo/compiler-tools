@@ -1,4 +1,4 @@
-import { getNode, StateSet } from './state'
+import { getEdge, StateSet } from './state'
 
 const newState = (index, nfaStates, isTerminal) => ({index, nfaStates, isTerminal})
 
@@ -67,7 +67,7 @@ const nfa2dfa = (nfa, detail = false) => {
         newState.push(nxtState)
         dest = states.push(nxtState) - 1
       }
-      edges.push(getNode(src, dest, characterInTheEdge))
+      edges.push(getEdge(src, dest, characterInTheEdge))
     })
   }
 

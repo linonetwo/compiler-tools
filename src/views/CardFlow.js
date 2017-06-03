@@ -37,12 +37,15 @@ export class CardFlow extends React.Component {
         results: [...prevState.results, item]
       }))
     })
-
     gun.get('tags').map().val((notes, tag) => {
       this.setState(prevState => ({
-        tags: [...prevState.tags, tag, 'app-regexp', 'app-firstfollow']
+        tags: [...prevState.tags, tag]
       }))
     })
+
+    this.setState(prevState => ({
+      tags: ['app-regexp', 'app-firstfollow']
+    }))
   }
 
   selectTag = (tag) => {

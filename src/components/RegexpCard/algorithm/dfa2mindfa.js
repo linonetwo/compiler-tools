@@ -1,4 +1,4 @@
-import { getNode, StateSet } from './state'
+import { getEdge, StateSet } from './state'
 
 const enumerateNodes = edges => {
   const s = new StateSet()
@@ -91,7 +91,7 @@ const dfa2mindfa = (dfa, detail = false) => {
 
   const edgeComp = (a, b) => a.src - b.src || a.dest - b.dest || (a.label < b.label ? -1 : a.label > b.label ? 1 : 0)
 
-  const edges = dfa.edges.map(e => getNode(stateMap[e.src], stateMap[e.dest], e.label))
+  const edges = dfa.edges.map(e => getEdge(stateMap[e.src], stateMap[e.dest], e.label))
     .sort(edgeComp)
     .reduce((a, e, i, arr) => {
       if (!i || edgeComp(e, arr[i - 1])) a.push(e)
