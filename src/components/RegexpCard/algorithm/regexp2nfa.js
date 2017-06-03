@@ -1,4 +1,3 @@
-import { concat } from 'lodash'
 import { getEdge } from './state'
 
 // 创建子 NFA，头部和尾部都是同一个编号，中间路径为空
@@ -73,7 +72,7 @@ const constructNfa = (state) => {
   }
 }
 
-const regexp2nfa = (input) => {
+export const regexp2nfa = (input) => {
   const state = {
     input,
     dict: {},
@@ -94,5 +93,3 @@ const regexp2nfa = (input) => {
 
   return { states: new Array(state.stateCount + 1).fill(0).map((_, i) => i), edges, terminals: [state.stateCount], dict: Object.keys(state.dict) }
 }
-
-export {regexp2nfa}

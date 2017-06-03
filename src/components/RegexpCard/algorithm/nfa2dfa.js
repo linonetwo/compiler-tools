@@ -19,23 +19,24 @@ const procNfa = ({states, edges, terminals, dict}) => {
   const εClosure = adjecent('ε')
   for (let index = 0, change = true; index < states.length && change; index++) {
     change = false
-    states.map(st => {
-      const s = εClosure[st]
-      const size = s.size
-      s.add(st)
-      s.forEach(e => s.addSet(εClosure[e]))
-      change = change || s.size > size
+    // http://sist.shanghaitech.edu.cn/faculty/songfu/course/spring2017/cs131/ch3.pdf p71
+    states.map(aState => {
+      const closureOfState = εClosure[aState]
+      const size = closureOfState.size
+      closureOfState.add(aState)
+      closureOfState.forEach(element => closureOfState.addSet(εClosure[element]))
+      change = change || closureOfState.size > size
     })
   }
 
   const trans = dict
     .map(adjecent)
     .map(trans => {
-      states.map(st => {
-        const s = new StateSet()
-        εClosure[st].forEach(ele => s.addSet(trans[ele]))
-        s.forEach(ele => s.addSet(εClosure[ele]))
-        trans[st] = s
+      states.map(aState => {
+        const stateSet = new StateSet()
+        εClosure[aState].forEach(element => stateSet.addSet(trans[element]))
+        stateSet.forEach(element => stateSet.addSet(εClosure[element]))
+        trans[aState] = stateSet
       })
       return trans
     })
@@ -49,7 +50,7 @@ const procNfa = ({states, edges, terminals, dict}) => {
   return {closure, dict, terminals}
 }
 
-const nfa2dfa = (nfa, detail = false) => {
+export const nfa2dfa = (nfa, detail = false) => {
   const { closure, dict, terminals } = procNfa(nfa)
   const states = [closure['ε'][0]]
   const newState = [closure['ε'][0]]
@@ -85,5 +86,3 @@ const nfa2dfa = (nfa, detail = false) => {
     dict,
   }
 }
-
-export {nfa2dfa}

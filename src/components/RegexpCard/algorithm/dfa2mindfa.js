@@ -22,7 +22,7 @@ const procDfa = ({ dict, nodes, edges, terminals }) => {
 
 
 
-const dfa2mindfa = (dfa, detail = false) => {
+export const dfa2mindfa = (dfa, detail = false) => {
   const { dict, closure, states, terminals } = procDfa(dfa)
   const stateSet = new StateSet(states)
 
@@ -48,23 +48,21 @@ const dfa2mindfa = (dfa, detail = false) => {
           }
         }
       }
+      // http://sist.shanghaitech.edu.cn/faculty/songfu/course/spring2017/cs131/ch3.pdf p116
+      let splitSet
+      for (let splitState of stateSet) {
+        let aClosure = closure[splitState][character]
+        if (!aClosure.size) continue
 
-      const splitSet = (() => {
-        for (let splitState of stateSet) {
-          let clo = closure[splitState][character]
-          if (!clo.size) continue
+        let element = Array.from(aClosure)[0]
 
-          let ele = Array.from(clo)[0]
-
-          for (let splitStateSet of stateSets) {
-            if (splitStateSet.has(ele)) { return splitStateSet }
-          }
+        for (let splitStateSet of stateSets) {
+          if (splitStateSet.has(element)) { splitSet = splitStateSet }
         }
-      })()
-      // Cannot split
+      }
+
       if (splitSet === undefined) {
-        console.log('cannot split, then quit')
-        return
+        throw new Error('无法分成子集')
       }
 
       const newSubset = stateSet.subset(state => closure[state][character].size && closure[state][character].subsetOf(splitSet))
@@ -98,18 +96,16 @@ const dfa2mindfa = (dfa, detail = false) => {
       return a
     }, [])
 
-  const nodeFmt = (s, index) => ({
+  const state2Node = (state, index) => ({
     id: index,
-    label: `${index}\n(${s.join()})`,
-    terminal: terminals.some(t => s.indexOf(t) >= 0)
+    label: `${index}\n(${state.join()})`,
+    terminal: terminals.some(terminal => state.indexOf(terminal) >= 0)
   })
 
   return {
     edges,
-    nodes: detail ? newStates.map(nodeFmt) : null,
+    nodes: detail ? newStates.map(state2Node) : null,
     terminals: newStates.map((s, i) => ({s, i})).filter(({s}) => terminals.some(t => s.indexOf(t) >= 0)).map(({i}) => i),
     dict
   }
 }
-
-export {dfa2mindfa}
