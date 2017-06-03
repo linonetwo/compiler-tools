@@ -81,6 +81,7 @@ export class RegexpCard extends React.Component {
         graphs.push({name: 'minified DFA', xml: mindfaXml})
         this.setState({ graphs, working: false })
       } catch (error) {
+        console.error(error)
         this.setState({ errorMessage: error.toString(), graphs: [], working: false })
       }
     }

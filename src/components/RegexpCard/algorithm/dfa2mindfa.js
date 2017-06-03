@@ -1,7 +1,7 @@
-import {getNode} from './state'
+import { getNode, StateSet } from './state'
 
 const enumerateNodes = edges => {
-  const s = new Set()
+  const s = new StateSet()
   edges.forEach(({src, dest}) => { s.add(src); s.add(dest) })
   return Array.from(s)
 }
@@ -12,7 +12,7 @@ const procDfa = ({ dict, nodes, edges, terminals }) => {
     .reduce((previous, id) => {
       previous[id] = dict.reduce((setToBuild, characterOnTheEdge) => {
         const sameDestinations = edges.filter(anEdge => anEdge.src === id && anEdge.label === characterOnTheEdge).map(({dest}) => dest)
-        setToBuild[characterOnTheEdge] = new Set(sameDestinations)
+        setToBuild[characterOnTheEdge] = new StateSet(sameDestinations)
         return setToBuild
       }, {})
       return previous
@@ -24,7 +24,7 @@ const procDfa = ({ dict, nodes, edges, terminals }) => {
 
 const dfa2mindfa = (dfa, detail = false) => {
   const { dict, closure, states, terminals } = procDfa(dfa)
-  const stateSet = new Set(states)
+  const stateSet = new StateSet(states)
 
   // Init state sets and split to two sets
   const stateSets = [stateSet.subset(s => terminals.indexOf(s) >= 0)]
@@ -36,7 +36,7 @@ const dfa2mindfa = (dfa, detail = false) => {
     change = false
     dict.map(character => change || stateSets.map(stateSet => {
       if (change) return
-      const s = new Set()
+      const s = new StateSet()
       let hasEmpty = false
       for (let element of stateSet) { closure[element][character].size === 0 ? hasEmpty = true : s.addSet(closure[element][character]) }
 

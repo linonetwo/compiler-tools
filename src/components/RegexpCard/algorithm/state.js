@@ -1,39 +1,47 @@
 
-Set.prototype.addSet = function (s) {
-  for (let ele of s) this.add(ele);
-  return this;
-}
-
-Set.prototype.eq = function (s) {
-  if (!s || this.size !== s.size) 
-    return false;
-  for (let ele of this) 
-    if (!s.has(ele)) 
-      return false;
-  return true;
-}
-
-Set.prototype.diff = function (s) {
-  for (let ele of s) {
-    if (this.has(ele))
-      this.delete(ele);  
+export class StateSet extends Set {
+  constructor (props) {
+    super(props)
+    return this
   }
-  return this;
+
+  addSet = (s) => {
+    for (let ele of s) this.add(ele)
+    return this
+  }
+
+  eq = (s) => {
+    if (!s || this.size !== s.size) { return false }
+    for (let ele of this) {
+      if (!s.has(ele)) { return false }
+    }
+    return true
+  }
+
+  diff = (s) => {
+    for (let ele of s) {
+      if (this.has(ele)) { this.delete(ele) }
+    }
+    return this
+  }
+
+  subset = (pred) => {
+    const s = new StateSet()
+    for (let ele of this) {
+      if (pred(ele)) { s.add(ele) }
+    }
+    return s
+  }
+
+  subsetOf = (s) => {
+    for (let ele of this) {
+      if (!s.has(ele)) { return false }
+    }
+    return true
+  }
 }
 
-Set.prototype.subset = function (pred) {
-  const s = new Set();
-  for (let ele of this)
-    if (pred(ele))
-      s.add(ele);
-  return s;
-}
 
-Set.prototype.subsetOf = function (s) {
-  for (let ele of this)
-    if (!s.has(ele))
-      return false;
-  return true;
-}
 
-export const getNode = (src, dest, label) => ({ src, dest, label });
+
+export const getNode = (src, dest, label) => ({ src, dest, label })
